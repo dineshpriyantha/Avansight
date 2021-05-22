@@ -12,7 +12,7 @@ namespace Avansight.Domain
 {
     public interface IDapper : IDisposable
     {
-        DbConnection GetDbconnection();
+        DbConnection CreateCTSSqlConnection();
         T Get<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure);
         IEnumerable<T> GetAll<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure);
         int Execute(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure);
@@ -27,6 +27,11 @@ namespace Avansight.Domain
         public DataAccessService(IConfiguration configuration)
         {
             _config = configuration;
+        }
+
+        public DbConnection CreateCTSSqlConnection()
+        {
+            return new SqlConnection(_config.GetConnectionString(ConnectionString));
         }
         public void Dispose()
         {
@@ -50,10 +55,21 @@ namespace Avansight.Domain
             return db.Query<T>(sp, parms, commandType: commandType).ToList();
         }
 
-        public DbConnection GetDbconnection()
+        public IEnumerable<T> Query<T>(string sql, object param = null, CommandType commandType = CommandType.StoredProcedure, SqlConnection transactionConn = null)
+
         {
-            return new SqlConnection(_config.GetConnectionString(ConnectionString));
-        }
+            if (transactionConn == null)
+            {
+                using (var conn = CreateCTSSqlConnection()) //Create new SQL Connection
+                {
+                    return conn.Query<T>(sql, param, null, true, null, commandType);
+                }
+            }
+            else
+            {
+                return transactionConn.Query<T>(sql, param, null, true, null, commandType);
+            }
+        }               
 
         public T Insert<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
         {

@@ -11,6 +11,8 @@
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="SimulatePatients" role="tabpanel" aria-labelledby="home-tab">
         @Html.Partial("SimulatePatient")
+
+        @Html.Partial("AgeGenderDistribution")
     </div>
     <div class="tab-pane fade" id="VisitData" role="tabpanel" aria-labelledby="profile-tab">... xcxxc</div>
 </div>
@@ -24,7 +26,11 @@
             var jsonInput = {
                 sampleSize: $("#txtSampleSize").val(),
                 maleWeight: $("#txtMaleWeight").val(),
-                femaleWeight: $("#txtFeMaleWeight").val() 
+                femaleWeight: $("#txtFeMaleWeight").val(),
+                ageGroup2130: $("#txtageGroup2130").val(),
+                ageGroup3140: $("#txtageGroup3140").val(),
+                ageGroup4150: $("#txtageGroup4150").val(),
+                ageGroup5160: $("#txtageGroup5160").val()
             }
             $.ajax(  
             {  
