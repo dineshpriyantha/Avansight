@@ -34,6 +34,7 @@ namespace Avansight
 
             //Register Dapper in scope
             services.AddScoped<IDapper, DataAccessService>();
+            services.AddInfrastructure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

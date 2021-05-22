@@ -12,11 +12,7 @@ namespace Avansight.Controllers
     {
         private static readonly Random getrandom = new Random();
         private readonly IDapper _dapper;
-
-        //public PatientController(IDapper dapper)
-        //{
-        //    _dapper = dapper;
-        //}
+        private List<Patient> listOfPatients = new List<Patient>();
 
         public IActionResult Index()
         {
@@ -60,38 +56,53 @@ namespace Avansight.Controllers
 
             int noOfMalesin5160ageRange = (ageGroup5160 / (ageGroup5160 + totalNoOfPatientInEachAgeRange)) * noOfMales;
             int noOfFemaleIn5160agerange = (ageGroup5160 / (ageGroup5160 + totalNoOfPatientInEachAgeRange)) * noOfFemales;
+                        
+            ListOfMalePatient(noOfMalesin2130ageRange, "Male", 21, 30);
+            ListOfMalePatient(noOfMalesin3140ageRange, "Male", 31, 40);
+            ListOfMalePatient(noOfMalesin4150ageRange, "Male", 41, 50);
+            ListOfMalePatient(noOfMalesin5160ageRange, "Male", 51, 60);
 
-            List<Patient> patients = new List<Patient>();
+            ListOfMalePatient(noOfFemaleIn2130agerange, "FeMale", 21, 30);
+            ListOfMalePatient(noOfFemaleIn3140agerange, "FeMale", 31, 40);
+            ListOfMalePatient(noOfFemaleIn4150agerange, "FeMale", 41, 50);
+            ListOfMalePatient(noOfFemaleIn5160agerange, "FeMale", 51, 60);
 
-            
 
+            // Unit of work
 
-            GetRandomNumber(21, 30);
-
-            // editing...
-            Patient patient = new Patient
-            {
-                Age = 25
-            };
-
-            return Json(patient);
+            return Json(listOfPatients);
         }
 
-        private int GetRandomNumber(int min, int max)
+
+        /// <summary>
+        /// List Of Patient
+        /// </summary>
+        /// <param name="noOfPatients"></param>
+        /// <param name="gender"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        private void ListOfMalePatient(int noOfPatients, string gender, int min, int max)
         {
-            lock(getrandom)
+            for (int i = 0; i < noOfPatients; i++)
             {
-                return getrandom.Next(min, max);
+                Patient patient = new Patient();
+                patient.Age = GetRandomNumber(min, max);
+                patient.Gender = gender;
+                listOfPatients.Add(patient);
             }
         }
 
-        private void ListOfMalePatient(int noOfMales)
+        /// <summary>
+        /// Get Random Number
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        private int GetRandomNumber(int min, int max)
         {
-            List<Patient> patients = new List<Patient>();
-            Patient patient = new Patient();
-            for (int i = 0; i < noOfMales; i++)
+            lock (getrandom)
             {
-               // patients.Add(patient.Age)
+                return getrandom.Next(min, max);
             }
         }
     }
