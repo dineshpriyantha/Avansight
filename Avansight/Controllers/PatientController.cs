@@ -11,6 +11,12 @@ namespace Avansight.Controllers
     public class PatientController : Controller
     {
         private static readonly Random getrandom = new Random();
+        private readonly IDapper _dapper;
+
+        //public PatientController(IDapper dapper)
+        //{
+        //    _dapper = dapper;
+        //}
 
         public IActionResult Index()
         {
@@ -76,6 +82,16 @@ namespace Avansight.Controllers
             lock(getrandom)
             {
                 return getrandom.Next(min, max);
+            }
+        }
+
+        private void ListOfMalePatient(int noOfMales)
+        {
+            List<Patient> patients = new List<Patient>();
+            Patient patient = new Patient();
+            for (int i = 0; i < noOfMales; i++)
+            {
+               // patients.Add(patient.Age)
             }
         }
     }
