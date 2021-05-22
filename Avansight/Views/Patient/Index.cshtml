@@ -18,3 +18,30 @@
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">... xcxxc</div>
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">... xcxcsdwew</div>
 </div>
+
+<script>
+    $(document).ready(function () { 
+//function will be called on button click having id btnsave
+        $("#btnSave").click(function () {
+            alert("df");
+
+            // Initialization
+            var jsonInput = {
+                sampleSize: $("#txtSampleSize").val(),
+                maleWeight: $("#txtMaleWeight").val(),
+                femaleWeight: $("#txtFeMaleWeight").val() 
+            }
+            $.ajax(  
+            {  
+                type: "POST", //HTTP POST Method  
+                    url: "Patient/AddPatient", // Controller/View   
+                    data: { //Passing data  
+                        jsonInput: JSON.stringify(jsonInput)
+                }  
+  
+            });  
+  
+        });  
+    });  
+  
+</script>
