@@ -45,3 +45,84 @@
     });  
   
 </script>
+
+<script>
+    const data = {
+        // This is the data you get back from the Domo Data API
+        rows: [
+            ['Low', '21-30', 8582.8875],
+            ['High', '31-40', 14415.941],
+            ['Low', '41-50', 1264.8215],
+            ['Medium', '51-60', 21478.799],
+            ['Critical', '61-70', 2621.97]
+        ],
+        // You provide the names, types, and mappings of your ordered columns
+        columns: [
+            {
+                type: DomoPhoenix.DATA_TYPE.STRING,
+                name: 'Order Priority',
+                mapping: DomoPhoenix.MAPPING.SERIES
+            },
+            {
+                type: DomoPhoenix.DATA_TYPE.STRING,
+                name: 'Customer Segment',
+                mapping: DomoPhoenix.MAPPING.ITEM
+            },
+            {
+                type: DomoPhoenix.DATA_TYPE.DOUBLE,
+                name: 'Sales',
+                mapping: DomoPhoenix.MAPPING.VALUE
+            }
+        ]
+    };
+
+    // Chart Options
+    const options = {
+        width: 600,
+        height: 500
+    };
+
+    // Create the Phoenix Chart
+    const chart = new DomoPhoenix.Chart(DomoPhoenix.CHART_TYPE.BAR, data, options);
+
+    // Append the canvas element to your app
+    document.getElementById('barChart').appendChild(chart.canvas);
+
+    // Render the chart when you're ready for the user to see it
+    chart.render();
+</script>
+
+
+<script>
+    const datapie = {
+        // This is the data you get back from the Domo Data API
+        rows: [
+            ['M', 62],
+            ['F', 23],
+        ],
+        // You provide the names, types, and mappings of your ordered columns
+        columns: [
+            {
+                type: DomoPhoenix.DATA_TYPE.STRING,
+                name: 'Technology',
+                mapping: DomoPhoenix.MAPPING.ITEM
+            },
+            {
+                type: DomoPhoenix.DATA_TYPE.DOUBLE,
+                name: 'Store',
+                mapping: DomoPhoenix.MAPPING.VALUE
+            }
+        ]
+    };
+
+    const optionspie = { /* ... */ };
+
+    // Create the Phoenix Chart
+    const chartpie = new DomoPhoenix.Chart(DomoPhoenix.CHART_TYPE.PIE, datapie, optionspie);
+
+    // Append the canvas element to your app
+    document.getElementById('pieChart').appendChild(chartpie.canvas);
+
+    // Render the chart when you're ready for the user to see it
+    chartpie.render();
+</script>
