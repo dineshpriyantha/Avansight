@@ -38,7 +38,14 @@
                     url: "Patient/AddPatient", // Controller/View   
                     data: { //Passing data  
                         jsonInput: JSON.stringify(jsonInput)
-                }  
+                    },
+                    success: function (data) {
+                        //console.log(data.listOfPatients);
+
+                        $(data).each(function (index, emp) {
+                            console.log(emp.age);
+                        });                      
+                    }
             });  
   
         });  

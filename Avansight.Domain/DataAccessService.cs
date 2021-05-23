@@ -21,21 +21,19 @@ namespace Avansight.Domain
     }
     public class DataAccessService : IDapper
     {
-        public static IConfiguration _config { get; private set; }
-        private string ConnectionString = _config["ConnectionStrings:DbConnection"];
-
+        private string ConnectionString;// = _config["ConnectionStrings:DbConnection"];
+        private readonly string _connString;
         public DataAccessService(IConfiguration configuration)
         {
-            _config = configuration;
+            _connString = configuration.GetConnectionString("ConnectionStrings:DbConnection");
         }
 
         public DbConnection CreateCTSSqlConnection()
         {
-            return new SqlConnection(_config.GetConnectionString(ConnectionString));
+            return new SqlConnection(_connString);
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public int Execute(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
@@ -45,13 +43,13 @@ namespace Avansight.Domain
 
         public T Get<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
         {
-            using IDbConnection db = new SqlConnection(_config.GetConnectionString(ConnectionString));
+            using IDbConnection db = new SqlConnection(_connString);
             return db.Query<T>(sp, parms, commandType: commandType).FirstOrDefault();
         }
 
         public IEnumerable<T> GetAll<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
         {
-            using IDbConnection db = new SqlConnection(_config.GetConnectionString(ConnectionString));
+            using IDbConnection db = new SqlConnection(_connString);
             return db.Query<T>(sp, parms, commandType: commandType).ToList();
         }
 
@@ -74,7 +72,8 @@ namespace Avansight.Domain
         public T Insert<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
         {
             T result;
-            using IDbConnection db = new SqlConnection(_config.GetConnectionString(ConnectionString));
+            using IDbConnection db = new SqlConnection(_connString);
+            
             try
             {
                 if (db.State == ConnectionState.Closed)
@@ -101,7 +100,7 @@ namespace Avansight.Domain
             {
                 if (db.State == ConnectionState.Open)
                     db.Close();
-            }
+            }            
 
             return result;
         }

@@ -1,5 +1,7 @@
 ﻿using Avansight.Domain;
+using Avansight.Domain.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Nancy.Json;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,12 @@ namespace Avansight.Controllers
         private static readonly Random getrandom = new Random();
         private readonly IDapper _dapper;
         private List<Patient> listOfPatients = new List<Patient>();
+        private IUnitOfWork unitOfWork;
+        
+        public PatientController(IUnitOfWork unitOfWork)
+        {
+            this.unitOfWork = unitOfWork;
+        }
 
         public IActionResult Index()
         {
@@ -67,10 +75,13 @@ namespace Avansight.Controllers
             ListOfMalePatient(noOfFemaleIn4150agerange, "F", 41, 50);
             ListOfMalePatient(noOfFemaleIn5160agerange, "F", 51, 60);
 
-
             // Unit of work
+            foreach (var item in listOfPatients)
+            {
+                unitOfWork.Patient.AddAsync(item);
+            }            
 
-            return Json(listOfPatients);
+            return Json(new { listOfPatients });
         }
 
 
